@@ -1,5 +1,4 @@
-import React from 'react'
-import Manager from '../components/manager'
+import Manager from '../components/Manager'
 const Home = () => {
   return (
     <div>
