@@ -41,6 +41,11 @@ const Manager = () => {
     });
 
     const data = await res.json();
+    if (!res.ok) {
+      toast.error(data.message || "Something went wrong");
+      return;
+    }
+
     setPasswordArray([...passwordArray, data]);
     setForm({ site: "", username: "", password: "" });
 
@@ -54,14 +59,29 @@ const Manager = () => {
     deletePassword(id, false)
   }
 
-  const deletePassword = (id, confirmBox = true) => {
-    if (!confirmBox || confirm('Delete this password?')) {
-      const updated = passwordArray.filter(p => p.id !== id)
-      setPasswordArray(updated)
-      localStorage.setItem('passwords', JSON.stringify(updated))
-      toast.success('Password deleted')
+  const deletePassword = async(id, confirmBox) => {
+      if (!confirmBox && !confirm("Delete this password?")) return;
+
+      try {
+        const res = await fetch(`${backendUrl}/api/credentials/${id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+      });
+
+      if (!res.ok) {
+        toast.error("Failed to delete credential");
+        return;
+      }
+      setPasswordArray(prev =>
+        prev.filter(item => item._id !== id)
+      );
+      toast.success("Password deleted");
+    } catch (error) {
+      toast.error("Server error");
     }
-  }
+  };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -169,7 +189,7 @@ const Manager = () => {
 
                     <tbody className="bg-white">
                       {passwordArray.map(item => (
-                        <tr key={item.id} className="border-b hover:bg-gray-50">
+                        <tr key={item._id} className="border-b hover:bg-gray-50">
                           <td className="py-3 text-center">
                             <a href={item.site} target="_blank" className="underline">
                               {item.site}
@@ -184,8 +204,8 @@ const Manager = () => {
                             <span onClick={() => copyText(item.password)} className="ml-2 cursor-pointer">📋</span>
                           </td>
                           <td className="text-center space-x-3">
-                            <button onClick={() => editPassword(item.id)}>✏️</button>
-                            <button onClick={() => deletePassword(item.id)}>🗑️</button>
+                            <button onClick={() => editPassword(item._id)}>✏️</button>
+                            <button onClick={() => deletePassword(item._id)}>🗑️</button>
                           </td>
                         </tr>
                       ))}
