@@ -4,7 +4,7 @@ export const AppContext = createContext()
 
 const AppContextProvider = (props) => {
 
-    const backendUrl = import.meta.env.VITE_BACKEND_URL
+    const backendUrl = "https://credential-manager-backend-0r6c.onrender.com"
     const [token, setToken] = useState(localStorage.getItem('token') ? localStorage.getItem('token') : '')
     const [userData, setUserData] = useState(false)
     const value = {
