@@ -2,3 +2,5 @@ node_modules/
 # environment variables
 .env
 .env.*
+.vite/
+vite/deps
