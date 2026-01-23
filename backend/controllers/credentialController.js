@@ -1,4 +1,4 @@
-import Credential from "../models/Credential.js";
+import Credential from "../models/credential.js";
 
 const isValidURL = (url) => {
   try {
@@ -10,38 +10,40 @@ const isValidURL = (url) => {
 };
 
 const isStrongPassword = (password) => {
-  // min 8 chars, 1 letter, 1 number
   const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
   return regex.test(password);
 };
 
-
 const addCredential = async (req, res) => {
-  const { site, username, password } = req.body;
+  try {
+    const { site, username, password } = req.body;
 
-  if (!site || !username || !password) {
-    return res.status(400).json({ message: "All fields are required" });
-  }
-    // URL validation
-  if (!isValidURL(site)) {
-    return res.status(400).json({ message: "Invalid website URL" });
-  }
+    if (!site || !username || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
 
-  // Password validation
-  if (!isStrongPassword(password)) {
-    return res.status(400).json({
-      message:
-        "Password must be at least 8 characters long and contain letters and numbers",
+    if (!isValidURL(site)) {
+      return res.status(400).json({ message: "Invalid website URL" });
+    }
+
+    if (!isStrongPassword(password)) {
+      return res.status(400).json({
+        message:
+          "Password must be at least 8 characters long and contain letters and numbers",
+      });
+    }
+
+    const credentials = await Credential.create({
+      user: req.userId,
+      site,
+      username,
+      password,
     });
-  }
-  const credential = await Credential.create({
-    user: req.userId, 
-    site,
-    username,
-    password,
-  });
 
-  res.status(201).json(credential);
+    res.status(201).json(credentials);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 const getCredentials = async (req, res) => {
@@ -52,13 +54,9 @@ const getCredentials = async (req, res) => {
 const deleteCredential = async (req, res) => {
   await Credential.deleteOne({
     _id: req.params.id,
-    user: req.userId, // ensures ownership
+    user: req.userId,
   });
   res.json({ message: "Deleted" });
 };
 
-export {
-    addCredential,
-    getCredentials,
-    deleteCredential
-}
+export { addCredential, getCredentials, deleteCredential };

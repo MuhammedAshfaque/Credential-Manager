@@ -24,12 +24,6 @@ const credentialSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true
-      // ⚠️ store ENCRYPTED password, not plain text
-    },
-
-    notes: {
-      type: String,
-      default: ""
     },
   },
   {
@@ -37,4 +31,6 @@ const credentialSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("Credential", credentialSchema);
+const Credential = mongoose.models.Credential || mongoose.model("Credential", credentialSchema);
+
+export default Credential;
