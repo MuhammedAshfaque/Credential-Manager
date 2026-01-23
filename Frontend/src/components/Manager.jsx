@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useContext } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
-import { v4 as uuidv4 } from 'uuid'
 import 'react-toastify/dist/ReactToastify.css'
 import { AppContext } from '../context/AppContext'
 
@@ -54,9 +53,15 @@ const Manager = () => {
 
 
   const editPassword = (id) => {
-    const item = passwordArray.find(p => p.id === id)
-    setForm(item)
-    deletePassword(id, false)
+    const item = passwordArray.find(p => p._id === id)
+    setForm({
+      site: item.site,
+      username: item.username,
+      password: item.password,
+    });
+    setPasswordArray(prev =>
+      prev.filter(p => p._id !== id)
+    );
   }
 
   const deletePassword = async(id, confirmBox) => {
@@ -204,8 +209,8 @@ const Manager = () => {
                             <span onClick={() => copyText(item.password)} className="ml-2 cursor-pointer">📋</span>
                           </td>
                           <td className="text-center space-x-3">
-                            <button onClick={() => editPassword(item._id)}>✏️</button>
-                            <button onClick={() => deletePassword(item._id)}>🗑️</button>
+                            <button className='cursor-pointer' onClick={() => editPassword(item._id)}>✏️</button>
+                            <button className='cursor-pointer' onClick={() => deletePassword(item._id)}>🗑️</button>
                           </td>
                         </tr>
                       ))}
