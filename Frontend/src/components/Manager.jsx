@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useContext } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { AppContext } from '../context/AppContext'
-
+import SoftBackdrop from './SoftBackdrop'
 const Manager = () => {
   const { token, backendUrl } = useContext(AppContext)
 
@@ -118,7 +118,7 @@ const Manager = () => {
           <h1 className="text-4xl font-extrabold text-center">
             <span>&lt;</span>
             Pass
-            <span className="text-primary">OP/&gt;</span>
+            <span className="text-green-500">OP/&gt;</span>
           </h1>
           <p className="text-center text-gray-600 mt-2">
             Your secure password manager
@@ -174,7 +174,7 @@ const Manager = () => {
           {/* Password Table */}
           {token && (
             <div className="mt-10">
-              <h2 className="text-2xl font-bold mb-4">Saved Passwords</h2>
+              <h2 className="text-2xl font-bold mb-4">Credentials</h2>
 
               {passwordArray.length === 0 && (
                 <p className="text-gray-500">No passwords saved yet.</p>

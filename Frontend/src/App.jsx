@@ -12,6 +12,7 @@ function App() {
   return (
     <>
     <div>
+      {/* all components */}
       <ToastContainer />
         <Navbar/>
         <Routes>
