@@ -109,6 +109,7 @@ const Manager = () => {
 
   return (
     <>
+    <SoftBackdrop/>
       <ToastContainer theme="dark" />
 
       <div className="min-h-[85vh] flex justify-center px-4 py-8">
