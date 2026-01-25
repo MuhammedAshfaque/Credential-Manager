@@ -184,12 +184,12 @@ const Manager = () => {
               {passwordArray.length > 0 && (
                 <div className="overflow-x-auto rounded-xl shadow-md">
                   <table className="w-full text-sm">
-                    <thead className="bg-[var(--primary)] text-white">
+                    <thead className="bg-[var(--primary)]">
                       <tr>
-                        <th className="py-3">Site</th>
-                        <th>Username</th>
-                        <th>Password</th>
-                        <th>Actions</th>
+                        <th className="text-xl py-3">Site</th>
+                        <th className="text-xl py-3">Username</th>
+                        <th className="text-xl py-3">Password</th>
+                        <th className="text-xl py-3">Actions</th>
                       </tr>
                     </thead>
 
