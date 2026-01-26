@@ -13,24 +13,18 @@ const Navbar = () => {
         setUser('');
         navigate('/login')
     }
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState("");
     const fetchProfile = async () => {
         try {
-          if (!token) return;
-          const res = await axios.get(
-            `${backendUrl}/api/user/get-profile`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+          if (!token) return; 
+          const res = await axios.get(backendUrl + '/api/user/get-profile',
+            { headers: { token } })
           setUser(res.data.userData);
         } catch (error) {
             console.error("Error fetching profile:", error);
-            // setToken("");
-            // setUser(null);
-            // localStorage.removeItem("token")
+            setToken("");
+            setUser(null);
+            localStorage.removeItem("token")
         }
       };
       useEffect(() => {
@@ -38,60 +32,83 @@ const Navbar = () => {
       }, [token])
 
     return (
-        <nav className="w-full bg-gray-900 text-white">
-            <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <nav className="w-full sticky top-0 z-50 bg-gradient-to-r from-gray-900/90 to-gray-800/90 backdrop-blur-md border-b border-white/10 text-white">
+  <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
 
-                {/* Logo */}
-                <div
-                    className="text-xl font-semibold cursor-pointer"
-                    onClick={() => navigate('/')}
-                >
-                    <span className="text-green-400">&lt;</span>
-                    Pass<span className="text-green-400">OP/&gt;</span>
-                </div>
+    {/* LEFT: Logo + User */}
+    <div className="flex items-center gap-6">
 
-                {/* Middle Nav Links */}
-                <div className="ml-52 flex gap-6">
-                    <button
-                        onClick={() => navigate('/about')}
-                        className="text-gray-300 hover:text-green-400 transition"
-                    >
-                        About
-                    </button>
+      {/* Logo */}
+      <div
+        onClick={() => navigate('/')}
+        className="text-xl font-bold cursor-pointer tracking-wide"
+      >
+        <span className="text-green-400">&lt;</span>
+        Pass<span className="text-green-400">OP/&gt;</span>
+      </div>
 
-                    <button
-                        onClick={() => navigate('/features')}
-                        className="text-gray-300 hover:text-green-400 transition"
-                    >
-                        Features
-                    </button>
-                </div>
+      {/* User Name */}
+      {token && (
+        <span className="hidden sm:inline text-sm text-gray-300">
+          Hi, <span className="text-green-400 font-semibold text-lg">{user?.name}</span> 👋
+        </span>
+      )}
+    </div>
 
-                {/* Right Section (Auth) */}
-                {token ? (
-                    <div className="flex justify-startitems-center gap-4">
-                        <span className="text-gray-300 text-sm">
-                            Hi, <span className="text-amber-600 font-medium">{user?.name}</span> 👋
-                            <span className="hidden md:inline"> Welcome back</span>
-                        </span>
+    {/* RIGHT: Nav Links + Auth */}
+    <div className="flex items-center gap-8">
 
-                        <button
-                            onClick={logout}
-                            className="px-5 py-2 rounded-md bg-red-500 hover:bg-red-400 transition cursor-pointer"
-                        >
-                            Logout
-                        </button>
-                    </div>
-                ) : (
-                    <button
-                        onClick={() => navigate('/login')}
-                        className="px-5 py-2 rounded-md bg-green-500 text-black font-medium hover:bg-green-400 transition cursor-pointer"
-                    >
-                        Login
-                    </button>
-                )}
-            </div>
-        </nav>
+      {/* Nav Links */}
+      <div className="flex gap-6">
+        {["How it works"].map((item) => (
+          <button
+            key={item}
+            onClick={() => navigate(`/how-it-works`)}
+            className="relative text-gray-300 hover:text-green-400 transition
+                       after:absolute after:left-0 after:-bottom-1 after:h-[2px]
+                       after:w-0 after:bg-green-400 after:transition-all
+                       hover:after:w-full cursor-pointer"
+          >
+            {item}
+          </button>
+        ))}
+        {["About", "Features"].map((item) => (
+          <button
+            key={item}
+            onClick={() => navigate(`/${item.toLowerCase()}`)}
+            className="relative text-gray-300 hover:text-green-400 transition
+                       after:absolute after:left-0 after:-bottom-1 after:h-[2px]
+                       after:w-0 after:bg-green-400 after:transition-all
+                       hover:after:w-full cursor-pointer"
+          >
+            {item}
+          </button>
+        ))}
+      </div>
+
+      {/* Auth Button */}
+      {token ? (
+        <button
+          onClick={logout}
+          className="px-4 py-2 rounded-lg bg-red-500/90 hover:bg-red-500
+                     transition shadow-md hover:shadow-red-500/40 cursor-pointer"
+        >
+          Logout
+        </button>
+      ) : (
+        <button
+          onClick={() => navigate('/login')}
+          className="px-4 py-2 rounded-lg bg-green-500 text-black font-medium
+                     hover:bg-green-400 transition shadow-md hover:shadow-green-500/40 cursor-pointer"
+        >
+          Login
+        </button>
+      )}
+    </div>
+
+  </div>
+</nav>
+
     )
 }
 
