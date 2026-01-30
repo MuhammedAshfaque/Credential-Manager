@@ -1,3 +1,5 @@
+import HowItWorks from "./HowItWorks";
+
 const About = () => {
   return (
     <section className="py-20 bg-gradient-to-b from-gray-950 to-gray-900 text-white">
@@ -63,6 +65,7 @@ const About = () => {
 
         </div>
       </div>
+      <HowItWorks/>
     </section>
   );
 };

@@ -37,12 +37,12 @@ const steps = [
 const HowItWorks = () => {
   return (
     <section className="py-20 bg-gradient-to-b from-gray-950 to-gray-900 text-white">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-6xl mx-auto px-4">
 
         {/* Heading */}
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold">
-            How <span className="text-green-400">PassOP</span> Works
+            How it Works
           </h2>
           <p className="mt-4 text-gray-400 max-w-2xl mx-auto">
             A simple, secure, and reliable way to manage your passwords.

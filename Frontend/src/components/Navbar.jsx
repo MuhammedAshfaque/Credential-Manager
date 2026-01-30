@@ -60,18 +60,6 @@ const Navbar = () => {
 
       {/* Nav Links */}
       <div className="flex gap-6">
-        {["How it works"].map((item) => (
-          <button
-            key={item}
-            onClick={() => navigate(`/how-it-works`)}
-            className="relative text-gray-300 hover:text-green-400 transition
-                       after:absolute after:left-0 after:-bottom-1 after:h-[2px]
-                       after:w-0 after:bg-green-400 after:transition-all
-                       hover:after:w-full cursor-pointer"
-          >
-            {item}
-          </button>
-        ))}
         {["About", "Features"].map((item) => (
           <button
             key={item}
